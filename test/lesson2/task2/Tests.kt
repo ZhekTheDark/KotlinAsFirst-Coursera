@@ -17,10 +17,15 @@ class Tests {
     @Test
     @Tag("Easy")
     fun isNumberHappy() {
-        assertTrue(isNumberHappy(1533))
+        assertFalse(isNumberHappy(1533))
         assertTrue(isNumberHappy(9009))
         assertFalse(isNumberHappy(3644))
+
+        /*assertEquals(false, isNumberHappy(1533))
+        assertEquals(true, isNumberHappy(9009))
+        assertEquals(false, isNumberHappy(3644))*/
     }
+
 
     @Test
     @Tag("Easy")
@@ -28,6 +33,10 @@ class Tests {
         assertTrue(queenThreatens(3, 6, 7, 6))
         assertTrue(queenThreatens(8, 1, 1, 8))
         assertFalse(queenThreatens(7, 6, 5, 7))
+
+        /*assertEquals(true, queenThreatens(3, 6, 7, 6))
+        assertEquals(true, queenThreatens(8, 1, 1, 8))
+        assertEquals(false, queenThreatens(7, 6, 5, 7))*/
     }
 
     @Test
