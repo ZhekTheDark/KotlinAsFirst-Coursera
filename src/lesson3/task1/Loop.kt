@@ -16,7 +16,7 @@ fun main(args: Array<String>) {
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -263,22 +263,32 @@ fun revert(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun isPalindrome(n: Int): Boolean {
-    var k = 0.0
+    var k = 0
     var n1 = n
     while (n1 > 9) {
         k += 1
-        n1 = n /10
+        n1 = n1 /10
     }
     k += 1
 
-    var leftI = n / Math.pow(10.0, k)
-    var rightI = n % 10.0
-
-    while (leftI == rightI) {
+    var leftI = (n / Math.pow(10.0, k - 1.0)).toInt()
+    var rightI = (n % 10.0).toInt()
+    var i = 1
+    var fl = false
+    if (leftI == rightI) {
+        fl = true
+    }
+    while (fl && (abs(i - (k / 2 + 1)) > 1)) {
+        fl = false
+        i += 1
+        leftI = (n / Math.pow(10.0, (k - i).toDouble()) % Math.pow(10.0, (1).toDouble())).toInt()
+        rightI = (n % Math.pow(10.0, (i).toDouble()) / Math.pow(10.0, (i - 1).toDouble())).toInt()
+        if (leftI == rightI) {
+            fl = true
+        }
 
     }
-
-    return true
+    return fl
 }
 
 /**
