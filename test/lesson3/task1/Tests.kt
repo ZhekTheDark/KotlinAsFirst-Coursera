@@ -60,6 +60,7 @@ class Tests {
         assertEquals(1, digitCountInNumber(510, 5))
         assertEquals(3, digitCountInNumber(4784041, 4))
         assertEquals(4, digitCountInNumber(5373393, 3))
+        assertEquals(4, digitCountInNumber(537339735, 3))
     }
 
     @Test
