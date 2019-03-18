@@ -199,7 +199,13 @@ fun polynom(p: List<Double>, x: Double): Double {
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
+fun accumulate(list: MutableList<Double>): MutableList<Double> {
+    if (list.size == 1) return list
+    for (i in 1 until list.size) {
+        list[i] += list[i - 1]
+    }
+    return list
+}
 
 /**
  * Средняя
@@ -208,7 +214,22 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> = TODO()
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    val result = mutableListOf<Int>()
+    var nn = n
+    var i = 2
+    if (n < 4) {
+        result.add(n)
+        return result
+    }
+    while (nn > 4) {
+        if (nn % i == 0) {
+            result.add(i)
+            nn /= i
+        } else i += 1
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -217,7 +238,22 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String {
+    val result = mutableListOf<Int>()
+    var nn = n
+    var i = 2
+    if (n < 4) {
+        result.add(n)
+        return result.joinToString(separator = "*")
+    }
+    while (nn > 4) {
+        if (nn % i == 0) {
+            result.add(i)
+            nn /= i
+        } else i += 1
+    }
+    return result.joinToString(separator = "*")
+}
 
 /**
  * Средняя
@@ -226,7 +262,15 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    val result = mutableListOf<Int>()
+    var nn = n
+    do {
+        result.add(nn % base)
+        nn /= base
+    } while (nn != 0)
+    return result.asReversed()
+}
 
 /**
  * Сложная
@@ -236,7 +280,18 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * строчными буквами: 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: n = 100, base = 4 -> 1210, n = 250, base = 14 -> 13c
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    var war = 'a'
+    var result = mutableListOf<Char>()
+    var nn = n
+    do {
+        if (nn % base > 9) result.add(war + nn % base - 10)
+        else result.add((nn % base).toChar() + 48)
+        nn /= base
+    } while (nn != 0)
+    result = result.asReversed()
+    return result.joinToString(separator = "")
+}
 
 /**
  * Средняя
@@ -245,7 +300,13 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var result = 0
+    for (i in 0 until digits.size) {
+        result += digits[i] * Math.pow(base.toDouble(), (digits.size - i - 1).toDouble()).toInt()
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -256,7 +317,17 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * 10 -> a, 11 -> b, 12 -> c и так далее.
  * Например: str = "13c", base = 14 -> 250
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var result = 0
+    //result = 'a'.toInt()
+    for (i in 0 until str.length) {
+        if (str[i].toInt() >= 48 && str[i].toInt() <= 57)
+            result += (str[i].toInt() - 48) * Math.pow(base.toDouble(), (str.length - i - 1).toDouble()).toInt()
+        else
+            result += (str[i].toInt() - 87) * Math.pow(base.toDouble(), (str.length - i - 1).toDouble()).toInt()
+    }
+    return result
+}
 
 /**
  * Сложная
