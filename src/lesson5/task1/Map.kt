@@ -94,7 +94,29 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val res = mutableMapOf<String, String>()
+    var addWord: String = ""
+
+    res += mapB
+    res += mapA
+
+    for ((par1) in mapA) {
+        if (par1 in mapB) {
+            addWord = if (mapA[par1] == mapB[par1]) {
+                mapA[par1]!!
+            } else {
+                mapA[par1]!! + ", " + mapB[par1]!!
+            }
+            res[par1] = addWord
+        }
+    }
+
+    /*println("res = $res")
+    println("mapB = $mapB")
+    println()*/
+    return res
+}
 
 /**
  * Простая
@@ -106,7 +128,29 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val res = mutableMapOf<Int, List<String>>()
+    val perfect = mutableListOf<String>()
+    val good = mutableListOf<String>()
+    val satisfactorily = mutableListOf<String>()
+    val unsatisfactorily = mutableListOf<String>()
+
+    for ((element) in grades) {
+        when (grades[element]) {
+            5 -> {perfect.add(element)}
+            4 -> {good.add(element)}
+            3 -> {satisfactorily.add(element)}
+            else -> {unsatisfactorily.add(element)}
+        }
+    }
+
+    if (perfect.size != 0) {res[5] = perfect}
+    if (good.size != 0) {res[4] = good}
+    if (satisfactorily.size != 0) {res[3] = satisfactorily}
+    if (unsatisfactorily.size != 0) {res[2] = unsatisfactorily}
+
+    return res
+}
 
 /**
  * Простая
