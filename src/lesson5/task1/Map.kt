@@ -162,7 +162,15 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
+
+    for ((key, value) in a) {
+        if (a[key] != b[key])
+            return false
+    }
+
+    return true
+}
 
 /**
  * Средняя
@@ -174,7 +182,30 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val res = mutableMapOf<String, Double>()
+
+    var first = stockPrices.map { it.first }
+    var second = stockPrices.map { it.second }
+    var ignoreFirst = setOf<String>()
+
+    for (i in 0 until stockPrices.size) {
+        if (first[i] in ignoreFirst) continue
+        var averagePrice = 0.0
+        var n = 0
+        ignoreFirst += first[i]
+        for (j in i until stockPrices.size) {
+            if (first[j] == first[i]) {
+                averagePrice += second[j]
+                n += 1
+            }
+        }
+        averagePrice /= n
+        res += (first[i] to averagePrice)
+    }
+
+    return res
+}
 
 /**
  * Средняя
@@ -191,7 +222,16 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = stuff
+        .filter { it.value.first == kind }
+        .minBy { it.value.second }
+        ?.key
+/*{
+    val map = stuff
+            .filter { it.value.first == kind }
+            .minBy { it.value.second }
+    return map?.key
+}*/
 
 /**
  * Сложная
@@ -233,7 +273,13 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   subtractOf(a = mutableMapOf("a" to "z"), mapOf("a" to "z"))
  *     -> a changes to mutableMapOf() aka becomes empty
  */
-fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TODO()
+fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
+    for ((key, value) in b) {
+        if (a[key] == b[key]) {
+            a.remove(key)
+        }
+    }
+}
 
 /**
  * Простая
@@ -242,7 +288,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit = TO
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = b.filter { it in a }
 
 /**
  * Средняя
@@ -253,7 +299,13 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean = word.all { it in chars }
+/*{ // что так, что так одинаково, по времени выполнения
+    for (i in word)
+        if (i !in chars)
+            return false
+    return true
+}*/
 
 /**
  * Средняя
@@ -267,7 +319,8 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> = list.groupingBy { it }.eachCount().filter { it.value > 1 }
+
 
 /**
  * Средняя
@@ -278,7 +331,17 @@ fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean = TODO()
+fun hasAnagrams(words: List<String>): Boolean = words.any { words.contains(it.reversed()) }
+/*{
+    if (words.size == 0) return false
+    else {
+        for (i in 0 until words.size)
+            for (j in i until words.size)
+                if (words[i] == words[j].reversed())
+                    return true
+    }
+    return false
+}*/
 
 /**
  * Сложная
@@ -298,6 +361,16 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+/*{
+    var res = Pair(-1, -1)
+    res = res.copy(first = 10)
+    println(res)
+    println("eto list.any { it == number } = ${list.any { list. it == number }}")
+    return res
+    // можно сделать перебор от 1 до n/2 и чекать есть ли такое значение в списке и соответственно с number - n
+    //      тогда возникает проблема что сделать с списком типа (listOf(1, 2, 5, 2), 4)
+    //          может надо создавать новый список после первого нахождения
+}*/
 
 /**
  * Очень сложная
@@ -318,4 +391,39 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    /*var res = mutableSetOf<String>()
+    var n = ""
+    n = treasures
+            //res.add(treasures.filter { it.value.first <= capacity } .key)
+            .filter { it.value.first <= capacity }
+            .maxBy { it.value.second }
+            .key
+    res + "test1"
+    res.add("test2")
+    return res*/
+
+    var res = mutableSetOf<String>()
+
+    var a1 = mapOf<String, Pair<Int, Int>>()
+    a1 = treasures.filter { it.value.first <= capacity }
+
+
+
+
+}
+// изначально отбрасываем все вещи что не помещаются в рюкзак
+// потом из подходящих берем самое ценное
+// и так херачим пока не закончатся допустимые предметы
+
+// 1 - 1000
+// 2 - 2000
+// 3 - 3000
+// 500 - 5000
+// в таком случае лучше взять 1 2 и 3
+
+//      1000 2000 3000 5000
+// 1000   x  3000 4000 6000
+// 2000 3000    x 5000 7000
+// 3000 4000 5000   x  8000
+// 5000 6000 7000 8000   x
